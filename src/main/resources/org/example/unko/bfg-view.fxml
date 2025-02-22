@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ProgressBar?>
+<?import javafx.scene.control.Slider?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane fx:id="root" prefHeight="425.0" prefWidth="650.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.unko.BFGController">
+    <VBox alignment="CENTER" prefHeight="277.0" prefWidth="650.0" spacing="20.0">
+      <padding>
+        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+      </padding>
+       <VBox prefHeight="158.0" prefWidth="531.0">
+          <children>
+             <HBox prefHeight="35.0" prefWidth="420.0">
+                <children>
+                   <Text strokeType="OUTSIDE" strokeWidth="0.0" text="File Name :         ">
+                      <font>
+                         <Font name="Osaka" size="17.0" />
+                      </font>
+                   </Text>
+                   <TextField fx:id="nameText" />
+                </children>
+             </HBox>
+              <HBox prefHeight="36.0" prefWidth="420.0">
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Extension child :       .">
+                     <font>
+                         <Font name="Osaka" size="17.0" />
+                     </font>
+                  </Text>
+                  <TextField fx:id="extensionText" />
+              </HBox>
+             <HBox prefHeight="33.0" prefWidth="490.0">
+                <children>
+                   <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="no-random" text="File Size :" wrappingWidth="123.671875">
+                      <font>
+                         <Font name="Osaka" size="17.0" />
+                      </font>
+                   </Text>
+                   <TextField fx:id="fileSize" styleClass="no-random" />
+                   <Text layoutX="10.0" layoutY="28.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="no-random" text=" KB" wrappingWidth="39.671875">
+                      <font>
+                         <Font name="Osaka" size="17.0" />
+                      </font>
+                   </Text>
+                </children>
+             </HBox>
+              <HBox prefHeight="46.0" prefWidth="628.0">
+                  <CheckBox fx:id="checkBox" mnemonicParsing="false" prefHeight="24.0" prefWidth="176.0" text="Random File Size">
+                     <font>
+                         <Font name="Osaka" size="17.0" />
+                     </font>
+                  </CheckBox>
+                <VBox prefHeight="100.0" prefWidth="146.0">
+                   <children>
+                      <Slider fx:id="slider" prefHeight="27.0" prefWidth="128.0" styleClass="random" visible="false" />
+                      <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="random" text="入力した値から相対的に移動します" visible="false">
+                         <font>
+                            <Font name="Osaka" size="12.0" />
+                         </font>
+                      </Text>
+                   </children>
+                  <HBox.margin>
+                     <Insets left="20.0" />
+                  </HBox.margin>
+                </VBox>
+               <VBox prefHeight="46.0" prefWidth="90.0">
+                  <children>
+                      <TextField fx:id="randomA" prefHeight="26.0" prefWidth="46.0" styleClass="random" visible="false" />
+                     <Label fx:id="ALabel" styleClass="random" visible="false">
+                        <font>
+                           <Font name="Osaka" size="14.0" />
+                        </font>
+                        <VBox.margin>
+                           <Insets left="5.0" />
+                        </VBox.margin>
+                     </Label>
+                  </children>
+                  <HBox.margin>
+                     <Insets left="20.0" />
+                  </HBox.margin>
+               </VBox>
+                <Text id="random" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="random" text="~" visible="false">
+                   <font>
+                      <Font name="Osaka" size="20.0" />
+                   </font>
+                  <HBox.margin>
+                     <Insets left="20.0" />
+                  </HBox.margin>
+                </Text>
+               <VBox prefHeight="46.0" prefWidth="90.0">
+                  <children>
+                      <TextField fx:id="randomB" prefHeight="26.0" prefWidth="46.0" styleClass="random" visible="false" />
+                     <Label fx:id="BLabel" styleClass="random" textAlignment="JUSTIFY" visible="false">
+                        <font>
+                           <Font name="Osaka" size="14.0" />
+                        </font>
+                        <VBox.margin>
+                           <Insets left="5.0" />
+                        </VBox.margin>
+                     </Label>
+                  </children>
+                  <HBox.margin>
+                     <Insets left="20.0" />
+                  </HBox.margin>
+               </VBox>
+              </HBox>
+          </children>
+       </VBox>
+
+      <Label />
+      <ProgressBar fx:id="progressBar" prefHeight="20.0" prefWidth="360.0" progress="0.0" visible="false" />
+    </VBox>
+   <Button layoutX="227.0" layoutY="296.0" onAction="#onGenerate" text="Generate!">
+       <font>
+          <Font name="Osaka" size="14.0" />
+       </font>
+   </Button>
+</AnchorPane>

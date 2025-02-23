@@ -1,25 +1,30 @@
 package org.example.unko;
 
-import javafx.fxml.FXML;
-import javafx.scene.Node;
-import javafx.scene.Parent;
-import javafx.scene.control.TextField;
-import javafx.scene.control.TextFormatter;
-
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 import java.util.function.UnaryOperator;
 
+//import JavaFX
+import javafx.fxml.FXML;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.control.TextField;
+import javafx.scene.control.TextFormatter;
+import javafx.scene.control.Label;
+import javafx.scene.control.Slider;
+import javafx.scene.control.CheckBox;
+import javafx.scene.control.ProgressBar;
+
+//import kotlin
 import kotlin.Unit;
-import org.example.util.Random;
-import org.example.util.Fixation;
+import org.example.util.RandomSize;
+import org.example.util.FixationSize;
 
 public class BFGController{
-
     private final Map<String, Node> nodeMap = new HashMap<>();
-    final String[] nodeString = {"nameText","extensionText","fileSize","checkBox","slider","randomA","randomB","ALabel","BLabel","fileSize","progressBar"};
-    boolean state = false;
+    final String[] nodeString = {"nameText","extensionText","fileSize","checkBox","slider","randomA","randomB","labelA","labelB","fileSize","progressBar"};
+    boolean boxState = false;
 
     @FXML
     private Parent root;
@@ -28,26 +33,22 @@ public class BFGController{
     public void initialize() {
         for (String i : nodeString) nodeMap.put(i, root.lookup("#" + i));
 
-        ((javafx.scene.control.CheckBox) nodeMap.get("checkBox")).selectedProperty().addListener((obs, oldValue, newValue) -> {
+        ((CheckBox) nodeMap.get("checkBox")).selectedProperty().addListener((_, _, newValue) -> {
             Set<Node> randObject = root.lookupAll(".random");
             for (Node node : randObject) node.setVisible(newValue);
-            state = newValue;
-            if (nodeMap.get("fileSize") instanceof javafx.scene.control.TextField textField) textField.setDisable(newValue);
+            boxState = newValue;
+            if (nodeMap.get("fileSize") instanceof TextField textField) textField.setDisable(newValue);
         });
 
-        ((javafx.scene.control.Slider) nodeMap.get("slider")).valueProperty().addListener((obs,oldValue,newValue) -> {
-            TextField randomA = ((javafx.scene.control.TextField) nodeMap.get("randomA"));
-            TextField randomB = ((javafx.scene.control.TextField) nodeMap.get("randomB"));
-            final float fRandomA = Float.parseFloat(randomA.getText());
-            final float fRandomB = Float.parseFloat(randomB.getText());
+        ((Slider) nodeMap.get("slider")).valueProperty().addListener((_, _, newValue) -> {
+            final float fRandomA = Float.parseFloat(((TextField) nodeMap.get("randomA")).getText());
+            final float fRandomB = Float.parseFloat(((TextField) nodeMap.get("randomB")).getText());
             float perValue = (float) Math.floor((Double) newValue*10)/1000;
 
             int iRandomA = (int)Math.floor(fRandomA*(perValue+1));
             int iRandomB = (int)Math.floor(fRandomB*(perValue+1));
-            ((javafx.scene.control.Label) nodeMap.get("ALabel")).setText(String.valueOf(iRandomA));
-            ((javafx.scene.control.Label) nodeMap.get("BLabel")).setText(String.valueOf(iRandomB));
-
-            System.out.println(fRandomA);
+            ((Label) nodeMap.get("labelA")).setText(String.valueOf(iRandomA));
+            ((Label) nodeMap.get("labelB")).setText(String.valueOf(iRandomB));
         });
 
         UnaryOperator<TextFormatter.Change> filter = change -> {
@@ -56,21 +57,39 @@ public class BFGController{
         };
         Set<Node> numNode = root.lookupAll(".onlyNum");
         for(Node node: numNode){
-            if(node instanceof javafx.scene.control.TextField num){
+            if(node instanceof TextField num){
                 num.setTextFormatter(new TextFormatter<>(filter));
             }
         }
-
     }
 
     @FXML
     protected void onGenerate() {
-        String fileName = ((javafx.scene.control.TextField) nodeMap.get("nameText")).getText();
-        String extension = ((javafx.scene.control.TextField) nodeMap.get("extensionText")).getText();
-        var random = new Random(fileName, extension,100, 150);
-        random.generate(percent -> {
-            System.out.println(percent);
-            return Unit.INSTANCE;
-        });
+        String fileName = ((TextField) nodeMap.get("nameText")).getText();
+        String extension = ((TextField) nodeMap.get("extensionText")).getText();
+        ProgressBar bar = ((ProgressBar) nodeMap.get("progressBar"));
+
+        if(boxState){
+            int randomA = Integer.parseInt(((Label) nodeMap.get("labelA")).getText());
+            int randomB = Integer.parseInt(((Label) nodeMap.get("labelB")).getText());
+            bar.setVisible(true);
+            
+            RandomSize random = new RandomSize(fileName, extension, randomA, randomB);
+            random.generate(percent -> {
+                bar.setProgress(percent);
+                //if(percent >= 1) bar.setVisible(false);
+                return Unit.INSTANCE;
+            });
+        }else {
+            int size = Integer.parseInt(((TextField) nodeMap.get("fileSize")).getText());
+            bar.setVisible(true);
+
+            FixationSize fixation = new FixationSize(fileName, extension, size);
+            fixation.generate(percent -> {
+                bar.setProgress(percent);
+                //if(percent >= 1) bar.setVisible(false);
+                return Unit.INSTANCE;
+            });
+        }
     }
 }

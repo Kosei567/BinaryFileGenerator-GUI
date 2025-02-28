@@ -23,7 +23,6 @@ private fun fileOut(size: Int, fileName: String, extension: String, onProgress: 
     try{
         FileOutputStream(realFileName).use { fos ->
             fos.write(data)
-            //print("Binary file generated successfully.\n File size is " + size + "KB")
             println("${java.nio.file.Paths.get(realFileName).toAbsolutePath()}")
             fos.close()
         }
